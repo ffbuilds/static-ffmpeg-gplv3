@@ -163,8 +163,22 @@ COPY --from=libzimg /usr/local/lib/pkgconfig/zimg.pc /usr/local/lib/pkgconfig/zi
 COPY --from=libzimg /usr/local/lib/libzimg.a /usr/local/lib/libzimg.a
 COPY --from=libzimg /usr/local/include/zimg* /usr/local/include/
 COPY --from=download /tmp/ffmpeg/ /tmp/ffmpeg/
+ARG TARGETPLATFORM
 WORKDIR /tmp/ffmpeg
 RUN \
+  case ${TARGETPLATFORM} in \
+    linux/arm/v*) \
+      config_opts="--extra-ldexeflags=-static" \
+    ;; \
+    *) \
+      config_opts=" \
+        --enable-libaom \
+        --enable-libuavs3d \
+        --enable-libvpx \
+        --enable-libx265 \
+      " \
+    ;; \
+  esac && \
   apk add --no-cache --virtual build \
     build-base nasm yasm pkgconf \
     zlib-dev zlib-static \
@@ -196,6 +210,7 @@ RUN \
   # large things on the stack.
   sed -i 's/add_ldexeflags -fPIE -pie/add_ldexeflags -fPIE -static-pie/' configure && \
   ./configure \
+  ${config_opts} \
   --pkg-config-flags="--static" \
   --extra-cflags="-fopenmp" \
   --extra-ldflags="-fopenmp -Wl,-z,stack-size=2097152" \
@@ -212,7 +227,6 @@ RUN \
   --enable-fontconfig \
   --enable-gray \
   --enable-iconv \
-  --enable-libaom \
   --enable-libaribb24 \
   --enable-libass \
   --enable-libbluray \
@@ -239,15 +253,12 @@ RUN \
   --enable-libsvtav1 \
   --enable-libtheora \
   --enable-libtwolame \
-  --enable-libuavs3d \
   --enable-libvidstab \
   --enable-libvmaf \
   --enable-libvo-amrwbenc \
   --enable-libvorbis \
-  --enable-libvpx \
   --enable-libwebp \
   --enable-libx264 \
-  --enable-libx265 \
   --enable-libxavs2 \
   --enable-libxml2 \
   --enable-libxvid \
