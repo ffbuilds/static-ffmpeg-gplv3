@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 
 # bump: ffmpeg /FFMPEG_VERSION=([\d.]+)/ https://github.com/FFmpeg/FFmpeg.git|^5
 # bump: ffmpeg after ./hashupdate Dockerfile FFMPEG $LATEST
@@ -7,44 +8,81 @@ ARG FFMPEG_VERSION=5.1.2
 ARG FFMPEG_URL="https://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2"
 ARG FFMPEG_SHA256=39a0bcc8d98549f16c570624678246a6ac736c066cebdb409f9502e915b22f2b
 
-# bump: alpine /FROM alpine:([\d.]+)/ docker:alpine|^3
-# bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
-FROM alpine:3.16.2 AS base
+# Must be specified
+ARG ALPINE_VERSION
 
-FROM ghcr.io/ffbuilds/static-libaom:main AS libaom
-FROM ghcr.io/ffbuilds/static-libaribb24:main AS libaribb24
-FROM ghcr.io/ffbuilds/static-libass:main AS libass
-FROM ghcr.io/ffbuilds/static-libbluray:main AS libbluray
-FROM ghcr.io/ffbuilds/static-libdav1d:main AS libdav1d
-FROM ghcr.io/ffbuilds/static-libdavs2:main AS libdavs2
-FROM ghcr.io/ffbuilds/static-libgme:main AS libgme
-FROM ghcr.io/ffbuilds/static-libgsm:main AS libgsm
-FROM ghcr.io/ffbuilds/static-libkvazaar:main AS libkvazaar
-FROM ghcr.io/ffbuilds/static-libmodplug:main AS libmodplug
-FROM ghcr.io/ffbuilds/static-libmp3lame:main AS libmp3lame
-FROM ghcr.io/ffbuilds/static-libmysofa:main AS libmysofa
-FROM ghcr.io/ffbuilds/static-libogg:main AS libogg
-FROM ghcr.io/ffbuilds/static-libopencore-amr:main AS libopencore-amr
-FROM ghcr.io/ffbuilds/static-libopenjpeg:main AS libopenjpeg
-FROM ghcr.io/ffbuilds/static-libopus:main AS libopus
-FROM ghcr.io/ffbuilds/static-librav1e:main AS librav1e
-FROM ghcr.io/ffbuilds/static-librubberband:main AS librubberband
-FROM ghcr.io/ffbuilds/static-libshine:main AS libshine
-FROM ghcr.io/ffbuilds/static-libspeex:main AS libspeex
-FROM ghcr.io/ffbuilds/static-libsvtav1:main AS libsvtav1
-FROM ghcr.io/ffbuilds/static-libtheora:main AS libtheora
-FROM ghcr.io/ffbuilds/static-libtwolame:main AS libtwolame
-FROM ghcr.io/ffbuilds/static-libuavs3d:main AS libuavs3d
-FROM ghcr.io/ffbuilds/static-libvidstab:main AS libvidstab
-FROM ghcr.io/ffbuilds/static-libvmaf:main AS libvmaf
-FROM ghcr.io/ffbuilds/static-libvorbis:main AS libvorbis
-FROM ghcr.io/ffbuilds/static-libvpx:main AS libvpx
-FROM ghcr.io/ffbuilds/static-libwebp:main AS libwebp
-FROM ghcr.io/ffbuilds/static-libx264:main AS libx264
-FROM ghcr.io/ffbuilds/static-libx265:main AS libx265
-FROM ghcr.io/ffbuilds/static-libxavs2:main AS libxavs2
-FROM ghcr.io/ffbuilds/static-libxvid:main AS libxvid
-FROM ghcr.io/ffbuilds/static-libzimg:main AS libzimg
+# Can be specified as anything@sha256:<hash>
+ARG LIBAOM_VERSION=main
+ARG LIBARIBB24_VERSION=main
+ARG LIBASS_VERSION=main
+ARG LIBBLURAY_VERSION=main
+ARG LIBDAV1D_VERSION=main
+ARG LIBDAVS2_VERSION=main
+ARG LIBGME_VERSION=main
+ARG LIBGSM_VERSION=main
+ARG LIBKVAZAAR_VERSION=main
+ARG LIBMODPLUG_VERSION=main
+ARG LIBMP3LAME_VERSION=main
+ARG LIBMYSOFA_VERSION=main
+ARG LIBOGG_VERSION=main
+ARG LIBOPENCORE_AMR_VERSION=main
+ARG LIBOPENJPEG_VERSION=main
+ARG LIBOPUS_VERSION=main
+ARG LIBRAV1E_VERSION=main
+ARG LIBRUBBERBAND_VERSION=main
+ARG LIBSHINE_VERSION=main
+ARG LIBSPEEX_VERSION=main
+ARG LIBSVTAV1_VERSION=main
+ARG LIBTHEORA_VERSION=main
+ARG LIBTWOLAME_VERSION=main
+ARG LIBUAVS3D_VERSION=main
+ARG LIBVIDSTAB_VERSION=main
+ARG LIBVMAF_VERSION=main
+ARG LIBVORBIS_VERSION=main
+ARG LIBVPX_VERSION=main
+ARG LIBWEBP_VERSION=main
+ARG LIBX264_VERSION=main
+ARG LIBX265_VERSION=main
+ARG LIBXAVS2_VERSION=main
+ARG LIBXVID_VERSION=main
+ARG LIBZIMG_VERSION=main
+
+FROM alpine:${ALPINE_VERSION} AS base
+
+FROM ghcr.io/ffbuilds/static-libaom-alpine_${ALPINE_VERSION}:${LIBAOM_VERSION} AS libaom
+FROM ghcr.io/ffbuilds/static-libaribb24-alpine_${ALPINE_VERSION}:${LIBARIBB24_VERSION} AS libaribb24
+FROM ghcr.io/ffbuilds/static-libass-alpine_${ALPINE_VERSION}:${LIBASS_VERSION} AS libass
+FROM ghcr.io/ffbuilds/static-libbluray-alpine_${ALPINE_VERSION}:${LIBBLURAY_VERSION} AS libbluray
+FROM ghcr.io/ffbuilds/static-libdav1d-alpine_${ALPINE_VERSION}:${LIBDAV1D_VERSION} AS libdav1d
+FROM ghcr.io/ffbuilds/static-libdavs2-alpine_${ALPINE_VERSION}:${LIBDAVS2_VERSION} AS libdavs2
+FROM ghcr.io/ffbuilds/static-libgme-alpine_${ALPINE_VERSION}:${LIBGME_VERSION} AS libgme
+FROM ghcr.io/ffbuilds/static-libgsm-alpine_${ALPINE_VERSION}:${LIBGSM_VERSION} AS libgsm
+FROM ghcr.io/ffbuilds/static-libkvazaar-alpine_${ALPINE_VERSION}:${LIBKVAZAAR_VERSION} AS libkvazaar
+FROM ghcr.io/ffbuilds/static-libmodplug-alpine_${ALPINE_VERSION}:${LIBMODPLUG_VERSION} AS libmodplug
+FROM ghcr.io/ffbuilds/static-libmp3lame-alpine_${ALPINE_VERSION}:${LIBMP3LAME_VERSION} AS libmp3lame
+FROM ghcr.io/ffbuilds/static-libmysofa-alpine_${ALPINE_VERSION}:${LIBMYSOFA_VERSION} AS libmysofa
+FROM ghcr.io/ffbuilds/static-libogg-alpine_${ALPINE_VERSION}:${LIBOGG_VERSION} AS libogg
+FROM ghcr.io/ffbuilds/static-libopencore-amr-alpine_${ALPINE_VERSION}:${LIBOPENCORE_AMR_VERSION} AS libopencore-amr
+FROM ghcr.io/ffbuilds/static-libopenjpeg-alpine_${ALPINE_VERSION}:${LIBOPENJPEG_VERSION} AS libopenjpeg
+FROM ghcr.io/ffbuilds/static-libopus-alpine_${ALPINE_VERSION}:${LIBOPUS_VERSION} AS libopus
+FROM ghcr.io/ffbuilds/static-librav1e-alpine_${ALPINE_VERSION}:${LIBRAV1E_VERSION} AS librav1e
+FROM ghcr.io/ffbuilds/static-librubberband-alpine_${ALPINE_VERSION}:${LIBRUBBERBAND_VERSION} AS librubberband
+FROM ghcr.io/ffbuilds/static-libshine-alpine_${ALPINE_VERSION}:${LIBSHINE_VERSION} AS libshine
+FROM ghcr.io/ffbuilds/static-libspeex-alpine_${ALPINE_VERSION}:${LIBSPEEX_VERSION} AS libspeex
+FROM ghcr.io/ffbuilds/static-libsvtav1-alpine_${ALPINE_VERSION}:${LIBSVTAV1_VERSION} AS libsvtav1
+FROM ghcr.io/ffbuilds/static-libtheora-alpine_${ALPINE_VERSION}:${LIBTHEORA_VERSION} AS libtheora
+FROM ghcr.io/ffbuilds/static-libtwolame-alpine_${ALPINE_VERSION}:${LIBTWOLAME_VERSION} AS libtwolame
+FROM ghcr.io/ffbuilds/static-libuavs3d-alpine_${ALPINE_VERSION}:${LIBUAVS3D_VERSION} AS libuavs3d
+FROM ghcr.io/ffbuilds/static-libvidstab-alpine_${ALPINE_VERSION}:${LIBVIDSTAB_VERSION} AS libvidstab
+FROM ghcr.io/ffbuilds/static-libvmaf-alpine_${ALPINE_VERSION}:${LIBVMAF_VERSION} AS libvmaf
+FROM ghcr.io/ffbuilds/static-libvorbis-alpine_${ALPINE_VERSION}:${LIBVORBIS_VERSION} AS libvorbis
+FROM ghcr.io/ffbuilds/static-libvpx-alpine_${ALPINE_VERSION}:${LIBVPX_VERSION} AS libvpx
+FROM ghcr.io/ffbuilds/static-libwebp-alpine_${ALPINE_VERSION}:${LIBWEBP_VERSION} AS libwebp
+FROM ghcr.io/ffbuilds/static-libx264-alpine_${ALPINE_VERSION}:${LIBX264_VERSION} AS libx264
+FROM ghcr.io/ffbuilds/static-libx265-alpine_${ALPINE_VERSION}:${LIBX265_VERSION} AS libx265
+FROM ghcr.io/ffbuilds/static-libxavs2-alpine_${ALPINE_VERSION}:${LIBXAVS2_VERSION} AS libxavs2
+FROM ghcr.io/ffbuilds/static-libxvid-alpine_${ALPINE_VERSION}:${LIBXVID_VERSION} AS libxvid
+FROM ghcr.io/ffbuilds/static-libzimg-alpine_${ALPINE_VERSION}:${LIBZIMG_VERSION} AS libzimg
 
 FROM base AS download
 ARG FFMPEG_URL

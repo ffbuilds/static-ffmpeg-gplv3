@@ -17,6 +17,14 @@ jobs:
       contents: read
       packages: write
 
+    strategy:
+      matrix:
+        alpine_version:
+          # bump: alpine /- ([\d.]+) # updateme/ docker:alpine|^3
+          # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
+          - 3.16.2 # updateme
+          - edge
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.1.0
@@ -38,12 +46,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@12cce9efe0d49980455aaaca9b071c0befcdd702
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-alpine_${{ matrix.alpine_version }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
+          build-args: |
+            ALPINE_VERSION=${{ matrix.alpine_version }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
