@@ -16,6 +16,7 @@ ARG LIBAOM_VERSION=main
 ARG LIBARIBB24_VERSION=main
 ARG LIBASS_VERSION=main
 ARG LIBBLURAY_VERSION=main
+ARG LIBBROTLI_VERSION=main
 ARG LIBDAV1D_VERSION=main
 ARG LIBDAVS2_VERSION=main
 ARG LIBGME_VERSION=main
@@ -30,6 +31,7 @@ ARG LIBOPENJPEG_VERSION=main
 ARG LIBOPUS_VERSION=main
 ARG LIBRAV1E_VERSION=main
 ARG LIBRUBBERBAND_VERSION=main
+ARG LIBSAMPLERATE_VERSION=main
 ARG LIBSHINE_VERSION=main
 ARG LIBSPEEX_VERSION=main
 ARG LIBSVTAV1_VERSION=main
@@ -44,6 +46,7 @@ ARG LIBWEBP_VERSION=main
 ARG LIBX264_VERSION=main
 ARG LIBX265_VERSION=main
 ARG LIBXAVS2_VERSION=main
+ARG LIBXML2_VERSION=main
 ARG LIBXVID_VERSION=main
 ARG LIBZIMG_VERSION=main
 
@@ -53,6 +56,7 @@ FROM ghcr.io/ffbuilds/static-libaom-alpine_${ALPINE_VERSION}:${LIBAOM_VERSION} A
 FROM ghcr.io/ffbuilds/static-libaribb24-alpine_${ALPINE_VERSION}:${LIBARIBB24_VERSION} AS libaribb24
 FROM ghcr.io/ffbuilds/static-libass-alpine_${ALPINE_VERSION}:${LIBASS_VERSION} AS libass
 FROM ghcr.io/ffbuilds/static-libbluray-alpine_${ALPINE_VERSION}:${LIBBLURAY_VERSION} AS libbluray
+FROM ghcr.io/ffbuilds/static-libbrotli-alpine_${ALPINE_VERSION}:${LIBBROTLI_VERSION} AS libbrotli
 FROM ghcr.io/ffbuilds/static-libdav1d-alpine_${ALPINE_VERSION}:${LIBDAV1D_VERSION} AS libdav1d
 FROM ghcr.io/ffbuilds/static-libdavs2-alpine_${ALPINE_VERSION}:${LIBDAVS2_VERSION} AS libdavs2
 FROM ghcr.io/ffbuilds/static-libgme-alpine_${ALPINE_VERSION}:${LIBGME_VERSION} AS libgme
@@ -67,6 +71,7 @@ FROM ghcr.io/ffbuilds/static-libopenjpeg-alpine_${ALPINE_VERSION}:${LIBOPENJPEG_
 FROM ghcr.io/ffbuilds/static-libopus-alpine_${ALPINE_VERSION}:${LIBOPUS_VERSION} AS libopus
 FROM ghcr.io/ffbuilds/static-librav1e-alpine_${ALPINE_VERSION}:${LIBRAV1E_VERSION} AS librav1e
 FROM ghcr.io/ffbuilds/static-librubberband-alpine_${ALPINE_VERSION}:${LIBRUBBERBAND_VERSION} AS librubberband
+FROM ghcr.io/ffbuilds/static-libsamplerate-alpine_${ALPINE_VERSION}:${LIBSAMPLERATE_VERSION} AS libsamplerate
 FROM ghcr.io/ffbuilds/static-libshine-alpine_${ALPINE_VERSION}:${LIBSHINE_VERSION} AS libshine
 FROM ghcr.io/ffbuilds/static-libspeex-alpine_${ALPINE_VERSION}:${LIBSPEEX_VERSION} AS libspeex
 FROM ghcr.io/ffbuilds/static-libsvtav1-alpine_${ALPINE_VERSION}:${LIBSVTAV1_VERSION} AS libsvtav1
@@ -81,6 +86,7 @@ FROM ghcr.io/ffbuilds/static-libwebp-alpine_${ALPINE_VERSION}:${LIBWEBP_VERSION}
 FROM ghcr.io/ffbuilds/static-libx264-alpine_${ALPINE_VERSION}:${LIBX264_VERSION} AS libx264
 FROM ghcr.io/ffbuilds/static-libx265-alpine_${ALPINE_VERSION}:${LIBX265_VERSION} AS libx265
 FROM ghcr.io/ffbuilds/static-libxavs2-alpine_${ALPINE_VERSION}:${LIBXAVS2_VERSION} AS libxavs2
+FROM ghcr.io/ffbuilds/static-libxml2-alpine_${ALPINE_VERSION}:${LIBXML2_VERSION} AS libxml2
 FROM ghcr.io/ffbuilds/static-libxvid-alpine_${ALPINE_VERSION}:${LIBXVID_VERSION} AS libxvid
 FROM ghcr.io/ffbuilds/static-libzimg-alpine_${ALPINE_VERSION}:${LIBZIMG_VERSION} AS libzimg
 
@@ -115,6 +121,9 @@ COPY --from=libass /usr/local/include/ass/ /usr/local/include/ass/
 COPY --from=libbluray /usr/local/lib/pkgconfig/libbluray.pc /usr/local/lib/pkgconfig/libbluray.pc
 COPY --from=libbluray /usr/local/lib/libbluray.a /usr/local/lib/libbluray.a
 COPY --from=libbluray /usr/local/include/libbluray/ /usr/local/include/libbluray/
+COPY --from=libbrotli /usr/local/lib/pkgconfig/libbrotli*.pc /usr/local/lib/pkgconfig/
+COPY --from=libbrotli /usr/local/lib/libbrotli*-static.a /usr/local/lib/
+COPY --from=libbrotli /usr/local/include/brotli/ /usr/local/include/brotli/
 COPY --from=libdav1d /usr/local/lib/pkgconfig/dav1d.pc /usr/local/lib/pkgconfig/dav1d.pc
 COPY --from=libdav1d /usr/local/lib/libdav1d.a /usr/local/lib/libdav1d.a
 COPY --from=libdav1d /usr/local/include/dav1d/ /usr/local/include/dav1d/
@@ -153,6 +162,9 @@ COPY --from=librav1e /usr/local/include/rav1e/ /usr/local/include/rav1e/
 COPY --from=librubberband /usr/local/lib/pkgconfig/rubberband.pc /usr/local/lib/pkgconfig/rubberband.pc
 COPY --from=librubberband /usr/local/lib/librubberband.a /usr/local/lib/librubberband.a
 COPY --from=librubberband /usr/local/include/rubberband/ /usr/local/include/rubberband/
+COPY --from=libsamplerate /usr/local/lib/pkgconfig/samplerate.pc /usr/local/lib/pkgconfig/samplerate.pc
+COPY --from=libsamplerate /usr/local/lib/libsamplerate.a /usr/local/lib/libsamplerate.a
+COPY --from=libsamplerate /usr/local/include/samplerate.h /usr/local/include/samplerate.h
 COPY --from=libshine /usr/local/lib/pkgconfig/shine.pc /usr/local/lib/pkgconfig/shine.pc
 COPY --from=libshine /usr/local/lib/libshine.a /usr/local/lib/libshine.a
 COPY --from=libshine /usr/local/include/shine/ /usr/local/include/shine/
@@ -195,6 +207,9 @@ COPY --from=libx265 /usr/local/include/x265*.h /usr/local/include/
 COPY --from=libxavs2 /usr/local/lib/pkgconfig/xavs2.pc /usr/local/lib/pkgconfig/xavs2.pc
 COPY --from=libxavs2 /usr/local/lib/libxavs2.a /usr/local/lib/libxavs2.a
 COPY --from=libxavs2 /usr/local/include/xavs2*.h /usr/local/include/
+COPY --from=libxml2 /usr/local/lib/pkgconfig/libxml-2.0.pc /usr/local/lib/pkgconfig/libxml-2.0.pc
+COPY --from=libxml2 /usr/local/lib/libxml2.a /usr/local/lib/libxml2.a
+COPY --from=libxml2 /usr/local/include/libxml2/ /usr/local/include/libxml2/
 COPY --from=libxvid /usr/local/lib/libxvidcore.* /usr/local/lib/
 COPY --from=libxvid /usr/local/include/xvid.h /usr/local/include/xvid.h
 COPY --from=libzimg /usr/local/lib/pkgconfig/zimg.pc /usr/local/lib/pkgconfig/zimg.pc
@@ -202,6 +217,7 @@ COPY --from=libzimg /usr/local/lib/libzimg.a /usr/local/lib/libzimg.a
 COPY --from=libzimg /usr/local/include/zimg* /usr/local/include/
 COPY --from=download /tmp/ffmpeg/ /tmp/ffmpeg/
 ARG TARGETPLATFORM
+ARG ALPINE_VERSION
 WORKDIR /tmp/ffmpeg
 RUN \
   case ${TARGETPLATFORM} in \
@@ -217,11 +233,22 @@ RUN \
       " \
     ;; \
   esac && \
+  case ${ALPINE_VERSION} in \
+    edge) \
+      # libbluray fails on edge
+      # https://gist.github.com/binoculars/a97a45b2ad32a8289a302fd340143f93
+    ;; \
+    *) \
+      config_opts=" \
+        ${config_opts} \
+        --enable-libbluray \
+      " \
+    ;; \
+  esac && \
   apk add --no-cache --virtual build \
     build-base nasm yasm pkgconf \
     zlib-dev zlib-static \
     bzip2-dev bzip2-static \
-    libxml2-dev \
     expat-dev expat-static \
     graphite2-static \
     glib-static \
@@ -229,19 +256,19 @@ RUN \
     libjpeg-turbo libjpeg-turbo-dev \
     libpng-dev libpng-static \
     giflib giflib-dev \
-    brotli-dev brotli-static \
     soxr-dev soxr-static \
-    tcl \
     numactl-dev \
     cunit cunit-dev \
     fftw-dev \
-    libsamplerate-dev \
     freetype-dev freetype-static \
     fribidi-dev fribidi-static \
     harfbuzz-dev harfbuzz-static \
     fontconfig-dev fontconfig-static \
     vo-amrwbenc-dev vo-amrwbenc-static \
     snappy-dev snappy-static && \
+  for lib in common dec enc; do \
+    ln -s /usr/local/lib/libbrotli${lib}-static.a /usr/local/lib/libbrotli${lib}.a; \
+  done && \
   # sed changes --toolchain=hardened -pie to -static-pie
   # extra ldflags stack-size=2097152 is to increase default stack size from 128KB (musl default) to something
   # more similar to glibc (2MB). This fixing segfault with libaom-av1 and libsvtav1 as they seems to pass
@@ -267,7 +294,6 @@ RUN \
   --enable-iconv \
   --enable-libaribb24 \
   --enable-libass \
-  --enable-libbluray \
   --enable-libdav1d \
   --enable-libdavs2 \
   --enable-libfreetype \
