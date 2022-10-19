@@ -1,3 +1,4 @@
+---
 name: Create and publish a Docker image
 
 on:
@@ -24,6 +25,16 @@ jobs:
           # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
           - 3.16.2 # updateme
           - edge
+        platform: [linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6]
+        include:
+          - platform: linux/amd64
+            name: amd64
+          - platform: linux/arm64
+            name: arm64
+          - platform: linux/arm/v7
+            name: arm_v7
+          - platform: linux/arm/v6
+            name: arm_v6
 
     steps:
       - name: Checkout repository
@@ -44,7 +55,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@12cce9efe0d49980455aaaca9b071c0befcdd702
+        uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea
         with:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-alpine_${{ matrix.alpine_version }}
@@ -55,9 +66,48 @@ jobs:
           context: .
           build-args: |
             ALPINE_VERSION=${{ matrix.alpine_version }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          platforms: ${{ matrix.platform }}
           push: ${{ github.event_name == 'push' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}-${{ matrix.name }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  build-and-push-manfiest:
+    if: github.event_name == 'push'
+    needs: [build-and-push-image]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        alpine_version:
+          - 3.16.2 # updateme
+          - edge
+
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@57396166ad8aefe6098280995947635806a0e6ea
+        with:
+          images: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-alpine_${{ matrix.alpine_version }}
+
+      - name: Create and push manifest
+        run: |
+          TAG=${{ steps.meta.outputs.tags }}
+          docker manifest create ${TAG} \
+            ${TAG}-amd64 \
+            ${TAG}-arm64 \
+            ${TAG}-arm_v7 \
+            ${TAG}-arm_v6
+          docker manifest push ${TAG}
