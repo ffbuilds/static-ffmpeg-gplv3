@@ -218,6 +218,7 @@ COPY --from=libzimg /usr/local/include/zimg* /usr/local/include/
 COPY --from=download /tmp/ffmpeg/ /tmp/ffmpeg/
 ARG TARGETPLATFORM
 ARG ALPINE_VERSION
+ARG EXTRA_CONFIG_OPTS
 WORKDIR /tmp/ffmpeg
 RUN \
   case ${TARGETPLATFORM} in \
@@ -327,6 +328,7 @@ RUN \
   --enable-libxml2 \
   --enable-libxvid \
   --enable-libzimg \
+  ${EXTRA_CONFIG_OPTS} \
   || (cat ffbuild/config.log ; false) \
   && make -j$(nproc) install && \
   apk del build
