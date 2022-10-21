@@ -153,7 +153,7 @@ jobs:
           context: .
           build-args: |
             ALPINE_VERSION=${{ matrix.alpine_version }}
-            EXTRA_CONFIG_OPTS="--disable-protocols --enable-protocol=file"
+            EXTRA_CONFIG_OPTS=--disable-protocols --enable-protocol=file
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
