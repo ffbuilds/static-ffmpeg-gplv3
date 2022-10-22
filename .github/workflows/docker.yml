@@ -19,13 +19,18 @@ jobs:
       packages: write
 
     strategy:
+      fail-fast: false
       matrix:
         alpine_version:
           # bump: alpine /- ([\d.]+) # updateme/ docker:alpine|^3
           # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
           - 3.16.2 # updateme
           - edge
-        platform: [linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6]
+        platform:
+          - linux/amd64
+          - linux/arm64
+          - linux/arm/v7
+          - linux/arm/v6
         include:
           - platform: linux/amd64
             name: amd64
@@ -70,8 +75,8 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}-${{ matrix.name }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ matrix.name }}-alpine-${{ matrix.alpine_version }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.name }}-alpine-${{ matrix.alpine_version }}
 
   build-and-push-manfiest:
     if: github.event_name == 'push'
@@ -158,5 +163,5 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=lambda
+          cache-to: type=gha,mode=max,scope=lambda
