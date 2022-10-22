@@ -234,18 +234,6 @@ RUN \
       " \
     ;; \
   esac && \
-  case ${ALPINE_VERSION} in \
-    edge) \
-      # libbluray fails on edge
-      # https://gist.github.com/binoculars/a97a45b2ad32a8289a302fd340143f93
-    ;; \
-    *) \
-      config_opts=" \
-        ${config_opts} \
-        --enable-libbluray \
-      " \
-    ;; \
-  esac && \
   apk add --no-cache --virtual build \
     build-base nasm yasm pkgconf \
     zlib-dev zlib-static \
@@ -295,6 +283,7 @@ RUN \
   --enable-iconv \
   --enable-libaribb24 \
   --enable-libass \
+  --enable-libbluray \
   --enable-libdav1d \
   --enable-libdavs2 \
   --enable-libfreetype \
