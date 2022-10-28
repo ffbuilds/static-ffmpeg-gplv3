@@ -5,6 +5,10 @@ on:
     - cron: '0 9 * * *'
   # enable manual trigger of version updates
   workflow_dispatch:
+
+permissions:
+  pull-requests: write
+
 jobs:
   bump:
     runs-on: ubuntu-latest
