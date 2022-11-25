@@ -6,7 +6,7 @@ Static build of FFmpeg with GPLv3
 ### Run it now
 ```sh
 # Built with alpine stable
-docker run ghcr.io/ffbuilds/static-ffmpeg-gplv3-alpine_3.16.2:main -version
+docker run ghcr.io/ffbuilds/static-ffmpeg-gplv3-alpine_3.17.0:main -version
 
 # Built with alpine edge
 docker run ghcr.io/ffbuilds/static-ffmpeg-gplv3-alpine_edge:main -version
@@ -17,7 +17,7 @@ docker run ghcr.io/ffbuilds/static-ffmpeg-gplv3-alpine_edge:main -version
 # syntax=docker/dockerfile:1
 
 # Select from the Support Matrix
-ARG ALPINE_VERSION=3.16.2
+ARG ALPINE_VERSION=3.17.0
 
 FROM ghcr.io/ffbuilds/static-ffmpeg-gplv3-alpine_${ALPINE_VERSION}:main AS ffmpeg
 
@@ -39,7 +39,7 @@ RUN ffmpeg -version
 
 ## Support Matrix
 
-| Library | alpine:edge amd64 | alpine:edge arm64 | alpine:edge arm/v7 | alpine:edge arm/v6 | alpine:3.16.2 amd64 | alpine:3.16.2 arm64 | alpine:3.16.2 arm/v7 | alpine:3.16.2 arm/v6 | lambda (alpine:3.16.2 amd64) | Comments |
+| Library | alpine:edge amd64 | alpine:edge arm64 | alpine:edge arm/v7 | alpine:edge arm/v6 | alpine:3.17.0 amd64 | alpine:3.17.0 arm64 | alpine:3.17.0 arm/v7 | alpine:3.17.0 arm/v6 | lambda (alpine:3.17.0 amd64) | Comments |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | ffmpeg          | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | |
 | libaom          | ✅ | ✅ | ⛔️ | ⛔️ | ✅ | ✅ | ⛔️ | ⛔️ | ✅ | |
