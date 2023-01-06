@@ -15,7 +15,7 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v3.2.0
+      - uses: actions/checkout@v3.3.0
         with:
           token: ${{ steps.generate-token.outputs.token }}
       - uses: wader/bump/action@master
