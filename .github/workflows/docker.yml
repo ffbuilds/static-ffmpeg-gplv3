@@ -24,8 +24,10 @@ jobs:
 
     strategy:
       matrix:
+        # bump: alpine /- ([\d.]+) # stable/ docker:alpine|^3
+        # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
         alpine_version:
-          - 3.16.2 # updateme
+          - 3.17.1 # stable
 
     steps:
       - name: Checkout repository
