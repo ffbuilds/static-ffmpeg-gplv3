@@ -27,7 +27,7 @@ jobs:
         # bump: alpine /- ([\d.]+) # stable/ docker:alpine|^3
         # bump: alpine link "Release notes" https://alpinelinux.org/posts/Alpine-$LATEST-released.html
         alpine_version:
-          - 3.17.1 # stable
+          - 3.17.2 # stable
 
     steps:
       - name: Checkout repository
