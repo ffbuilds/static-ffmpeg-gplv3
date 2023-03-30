@@ -41,7 +41,7 @@ jobs:
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
       - name: Checkout repository
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3.5.0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
