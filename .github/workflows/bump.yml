@@ -9,3 +9,6 @@ on:
 jobs:
   bump:
     uses: ffbuilds/.github/.github/workflows/bump.yml@main
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
