@@ -4,9 +4,9 @@
 # bump: ffmpeg after ./hashupdate Dockerfile FFMPEG $LATEST
 # bump: ffmpeg link "Changelog" https://github.com/FFmpeg/FFmpeg/blob/n$LATEST/Changelog
 # bump: ffmpeg link "Source diff $CURRENT..$LATEST" https://github.com/FFmpeg/FFmpeg/compare/n$CURRENT..n$LATEST
-ARG FFMPEG_VERSION=5.1.2
+ARG FFMPEG_VERSION=5.1.3
 ARG FFMPEG_URL="https://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2"
-ARG FFMPEG_SHA256=39a0bcc8d98549f16c570624678246a6ac736c066cebdb409f9502e915b22f2b
+ARG FFMPEG_SHA256=5d5bef6a11f0c500588f9870ec965a30acc0d54d8b1e535da6554a32902d236d
 
 # Must be specified
 ARG ALPINE_VERSION
