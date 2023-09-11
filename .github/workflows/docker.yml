@@ -70,7 +70,7 @@ jobs:
           build-args: |
             ALPINE_VERSION=${{ matrix.alpine_version }}
             EXTRA_CONFIG_OPTS=--disable-protocols --enable-protocol=file
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
